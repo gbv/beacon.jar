@@ -1,0 +1,66 @@
+<project default="usage" basedir=".">
+
+	<property name="jarfile" value="beacon.jar"/>
+	<property name="doc.dir" value="api"/>
+
+	<path id="classpath">
+		<pathelement location="lib/xercesImpl.jar"/>
+		<pathelement location="lib/xml-apis.jar"/>
+	</path>
+
+	<target name="usage">
+		<echo message="ant { compile | jar | junit | clean | javadoc }"/>
+	</target>
+
+	<target name="compile">
+		<mkdir dir="build"/>
+		<javac srcdir="src" destdir="build" includeantruntime="false">
+			<classpath refid="classpath"/>
+		</javac>
+	</target>
+
+	<target name="jar" depends="compile">
+		<jar destfile="${jarfile}" basedir="build"/>
+	</target>
+
+	<target name="compile.test">
+		<javac srcdir="test" destdir="test" includeantruntime="false">
+			<classpath>
+ 				<path refid="classpath"/>
+				<path location="build"/>
+				<path location="lib/junit.jar"/>
+			</classpath>	
+		</javac>
+	</target>
+
+	<target name="junit" depends="compile.test">
+		<junit printsummary="yes">
+            <classpath>
+ 				<path refid="classpath"/>
+				<path location="build"/>
+				<path location="test"/>
+				<path location="lib/junit.jar"/>
+			</classpath>
+			<batchtest fork="yes">
+				<fileset dir="test" includes="*.java"/>
+				<formatter type="plain" usefile="false"/>
+        	</batchtest>
+		</junit>
+	</target>
+
+	<target name="javadoc">
+		<delete dir="${doc.dir}" failonerror="false"/>
+		<mkdir dir="${doc.dir}"/>
+		<javadoc sourcepath="src" destdir="${doc.dir}">
+			<link href="http://docs.oracle.com/javase/6/docs/api/"/>
+		</javadoc>
+	</target>
+
+	<target name="clean" description="Removes build files">
+		<delete dir="build" failonerror="false"/>
+		<delete dir="${doc.dir}" failonerror="false"/>
+		<delete dir="${jarfile}" failonerror="false"/>
+		<delete dir="test" includes="*.class"/>
+	</target>
+
+</project>
