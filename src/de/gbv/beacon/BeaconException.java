@@ -12,6 +12,11 @@ package de.gbv.beacon;
 
 public class BeaconException extends Exception {
 
+	// TODO: include in exception
+	private String systemId;
+	private int lineNumber;
+	private int columnNumber;
+
 	/**
 	 * Constructs a new BeaconException without detailed message.
 	 */
