@@ -56,6 +56,21 @@
 		</javadoc>
 	</target>
 
+	<target name="gh-pages" depends="javadoc">
+		<move file="${doc.dir}" tofile="${doc.dir}.tmp"/>
+		<exec executable="git">
+			<arg line="checkout gh-pages"/>
+		</exec>
+		<exec executable="git">
+			<arg line="rm -rf ${doc.dir}"/>
+		</exec>
+		<move file="${doc.dir}.tmp" tofile="${doc.dir}"/>
+		<exec executable="git">
+			<arg line="add ${doc.dir}"/>
+		</exec>
+		<echo message="Just commit to update gh-pages!"/>
+	</target>
+
 	<target name="clean" description="Removes build files">
 		<delete dir="build" failonerror="false"/>
 		<delete dir="${doc.dir}" failonerror="false"/>
